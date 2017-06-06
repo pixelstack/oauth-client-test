@@ -1,0 +1,20 @@
+<% if @code || params[:token] %>
+  <% if params[:token] %>
+    <%= link_to "Use Design", "http://localhost:3000/auth-mix/8a455f84-8fa0-4a60-a630-44bdecccf36d?access_token=#{params[:token]}" if params[:token] %>
+  <% else %>
+    <p>
+      <strong>Code:</strong> <%= @code %>
+    </p>
+
+    <%= form_with scope: :post, url: "http://localhost:3000/oauth/token", data: { remote: false } do |f| %>
+      <%= f.text_field :client_id, { name: :client_id, value: @client_id } %>
+      <%= f.text_field :client_secret, { name: :client_secret, value: @client_secret } %>
+      <%= f.text_field :code, { name: :code, value: @code } %>
+      <%= f.text_field :grant_type, { name: :grant_type, value: @grant_type } %>
+      <%= f.text_field :redirect_uri, { name: :redirect_uri, value: @redirect_uri } %>
+      <%= f.submit "Get Token" %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= link_to "Authorize", "http://localhost:3000/oauth/authorize?client_id=#{@client_id}&redirect_uri=http://localhost:3001&response_type=code" %>
+<% end %>

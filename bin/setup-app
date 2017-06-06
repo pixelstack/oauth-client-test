@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+require 'pathname'
+require 'fileutils'
+include FileUtils
+
+# path to your application root.
+APP_ROOT = Pathname.new File.expand_path('../../', __FILE__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+chdir APP_ROOT do
+  # Setup base files
+  puts "\n== Creating required files =="
+  system('cp config/secrets.yml.example config/secrets.yml')
+  puts "\n== Complete. Run bin/setup to complete installation =="
+end
